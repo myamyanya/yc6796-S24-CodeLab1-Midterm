@@ -22,6 +22,34 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private int carrotAmt;
+
+    public int CarrotAmt
+    {
+        get
+        {
+            return carrotAmt;
+        }
+        set
+        {
+            carrotAmt = value;
+        }
+    }
+    
+    private int eggAmt;
+
+    public int EggAmt
+    {
+        get
+        {
+            return eggAmt;
+        }
+        set
+        {
+            eggAmt = value;
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {

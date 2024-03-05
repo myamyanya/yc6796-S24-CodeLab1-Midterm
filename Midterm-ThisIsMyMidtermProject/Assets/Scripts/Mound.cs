@@ -6,7 +6,8 @@ using Random = UnityEngine.Random;
 
 public class Mound : MonoBehaviour
 {
-    public float changeSpriteDelay = 1.0f;
+    // For the time delay before the sprite changing
+    public float changeSpriteDelay = 2.0f;
 
     public Sprite carrotSprite;
     public Sprite[] eggSprite;
@@ -24,19 +25,44 @@ public class Mound : MonoBehaviour
         
     }
 
+    // Is the dirt digged?
+    private bool isDigged = false;
+    
     private void OnTriggerStay(Collider other)
     {
+        Debug.Log(isDigged);
+        
         if (other.transform.gameObject.tag == "Player")
         {
-            Debug.Log("Dig?");
+            //Debug.Log("Dig?");
 
-            if (Input.GetKeyDown(KeyCode.F))
+            if (!isDigged && Input.GetKeyDown(KeyCode.F))
             {
                 Invoke("ChangeSprite", changeSpriteDelay);
             }
+
+            if (isDigged && Input.GetKey(KeyCode.G))
+            {
+                Debug.Log("Collected");
+
+                if (isCarrot)
+                {
+                    GameManager.instance.CarrotAmt++;
+                }
+                else if (isEgg)
+                {
+                    GameManager.instance.EggAmt++;
+                }
+                
+                Destroy(gameObject);
+            }
         }
     }
-
+    
+    // For score
+    private bool isCarrot = false;
+    private bool isEgg = false;
+    
     private void ChangeSprite()
     {
         Debug.Log("Sprite changed.");
@@ -50,11 +76,17 @@ public class Mound : MonoBehaviour
         if (lottery == 0)
         {
             GetComponent<SpriteRenderer>().sprite = carrotSprite;
+            
+            isCarrot = true;
         }
         else
         {
             int egg = Random.Range(0, eggSprite.Length);
             GetComponent<SpriteRenderer>().sprite = eggSprite[egg];
+            
+            isEgg = true;
         }
+        
+        isDigged = true;
     }
 }
