@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using SimpleJSON;
 
 public class LevelLoader : MonoBehaviour
 {
@@ -47,6 +48,39 @@ public class LevelLoader : MonoBehaviour
 
     public void LoadLevel()
     {
-        
+        JSONNode allLevelNode = JSONNode.Parse(fileContent);
+        JSONNode levelNode = allLevelNode["lv0"];
+
+        JSONArray levelArray = levelNode["ascii"].AsArray;
+
+        // Horizontal
+        for (int yLevelPosition = 0; yLevelPosition < levelArray.Count; yLevelPosition++)
+        {
+            string line = levelArray[yLevelPosition].ToString().ToUpper();
+
+            char[] characters = line.ToCharArray();
+            
+            // Vertical
+            for (int xLevelPosition = 0; xLevelPosition < characters.Length; xLevelPosition++)
+            {
+                char chara = characters[xLevelPosition];
+
+                GameObject newObj = null;
+
+                switch (chara)
+                {
+                    case 'W':
+                        newObj = Instantiate(Resources.Load<GameObject>("Prefabs/BrickBlue"));
+                        break;
+                    default:
+                        break;
+                }
+
+                if (newObj != null)
+                {
+                    newObj.transform.position = new Vector3(xLevelPosition, -yLevelPosition, 0);
+                }
+            }
+        }
     }
 }
