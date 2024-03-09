@@ -54,9 +54,9 @@ public class LevelLoader : MonoBehaviour
         JSONArray levelArray = levelNode["ascii"].AsArray;
 
         // Horizontal
-        for (int yLevelPosition = 0; yLevelPosition < levelArray.Count; yLevelPosition++)
+        for (int zLevelPosition = 0; zLevelPosition < levelArray.Count; zLevelPosition++)
         {
-            string line = levelArray[yLevelPosition].ToString().ToUpper();
+            string line = levelArray[zLevelPosition].ToString().ToUpper();
 
             char[] characters = line.ToCharArray();
             
@@ -69,8 +69,14 @@ public class LevelLoader : MonoBehaviour
 
                 switch (chara)
                 {
-                    case 'W':
+                    case 'P':
+                        newObj = Instantiate(Resources.Load<GameObject>("Prefabs/Player"));
+                        break;
+                    case 'B':
                         newObj = Instantiate(Resources.Load<GameObject>("Prefabs/BrickBlue"));
+                        break;
+                    case '-':
+                        newObj = Instantiate(Resources.Load<GameObject>("Prefabs/BrickFloor"));
                         break;
                     default:
                         break;
@@ -78,7 +84,7 @@ public class LevelLoader : MonoBehaviour
 
                 if (newObj != null)
                 {
-                    newObj.transform.position = new Vector3(xLevelPosition, -yLevelPosition, 0);
+                    newObj.transform.position = new Vector3(xLevelPosition, 0, -zLevelPosition);
                 }
             }
         }
