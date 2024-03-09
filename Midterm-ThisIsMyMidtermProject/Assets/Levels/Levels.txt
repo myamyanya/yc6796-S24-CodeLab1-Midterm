@@ -2,11 +2,11 @@
     "lv0":
     {
         "ascii": [
-            "WWWWWWWWWWWWW",
-            "W-----------W",
-            "W--S-----S--W",
-            "W-----P-----W",
-            "W-----------W",
+            "BBBBBBBBBBBBB",
+            "B-----------W",
+            "B--S-----S--W",
+            "B-----P-----W",
+            "B-----------W",
             "WWWWWWWWWWWWW"
         ]
     }
