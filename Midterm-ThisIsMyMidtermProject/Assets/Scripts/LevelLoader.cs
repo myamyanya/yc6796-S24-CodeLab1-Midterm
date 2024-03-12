@@ -11,13 +11,33 @@ public class LevelLoader : MonoBehaviour
     
     // File path
     private string FIRE_PATH;
+    
+    // For parenting and organizing all Instantiated objects
+    private GameObject level;
+    
+    public int currenLevel = 0;
+
+    public int CurrentLevel
+    {
+        get
+        {
+            return currenLevel;
+        }
+        set
+        {
+            currenLevel = value;
+            LoadLevel();
+        }
+    }
+
+    private int maxLevel = 3;
 
     private void Awake()
     {
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -43,13 +63,35 @@ public class LevelLoader : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // If there's no mound left in the level, load the next level
+        GameObject[] moundLeft = GameObject.FindGameObjectsWithTag("Mound");
+
+        Debug.Log(moundLeft.Length);
+        
+        if (moundLeft.Length <= 0)
+        {
+            if (currenLevel < maxLevel)
+            {
+                Debug.Log("Loading next level");
+
+                CurrentLevel++;
+            }
+            else if (currenLevel >= maxLevel)
+            {
+                GameManager.instance.isInGame = false;
+            }
+        }
         
     }
 
     public void LoadLevel()
     {
+        // Reset Level
+        Destroy(level);
+        level = new GameObject("Level Objects");
+        
         JSONNode allLevelNode = JSONNode.Parse(fileContent);
-        JSONNode levelNode = allLevelNode["lv0"];
+        JSONNode levelNode = allLevelNode["lv" + currenLevel + ""];
 
         JSONArray levelArray = levelNode["ascii"].AsArray;
 
@@ -75,6 +117,18 @@ public class LevelLoader : MonoBehaviour
                     case 'B':
                         newObj = Instantiate(Resources.Load<GameObject>("Prefabs/BrickBlue"));
                         break;
+                    case 'G':
+                        newObj = Instantiate(Resources.Load<GameObject>("Prefabs/BrickGreen"));
+                        break;
+                    case 'I':
+                        newObj = Instantiate(Resources.Load<GameObject>("Prefabs/BrickPink"));
+                        break;
+                    case 'Y':
+                        newObj = Instantiate(Resources.Load<GameObject>("Prefabs/BrickYellow"));
+                        break;
+                    case 'M':
+                        newObj = Instantiate(Resources.Load<GameObject>("Prefabs/Mound"));
+                        break;
                     case '-':
                         newObj = Instantiate(Resources.Load<GameObject>("Prefabs/BrickFloor"));
                         break;
@@ -84,6 +138,9 @@ public class LevelLoader : MonoBehaviour
 
                 if (newObj != null)
                 {
+                    // Adding newObj to parent
+                    newObj.transform.parent = level.transform;
+                    
                     newObj.transform.position = new Vector3(xLevelPosition, 0, -zLevelPosition);
                 }
             }

@@ -2,12 +2,45 @@
     "lv0":
     {
         "ascii": [
-            "BBBBBBBBBBBBB",
-            "B-----------W",
-            "B--S-----S--W",
-            "B-----P-----W",
-            "B-----------W",
-            "WWWWWWWWWWWWW"
+            "BBBBBBBBBBBBG",
+            "I-----------G",
+            "I--M-----M--G",
+            "I-----P-----G",
+            "I-----------G",
+            "IYYYYYYYYYYYY"
+        ]
+    }
+    "lv1":
+    {
+        "ascii": [
+            "IIIIIIIIIIIIB",
+            "Y--M-----M--B",
+            "Y-----M-----B",
+            "Y-----P-----B",
+            "Y-----M-----B",
+            "YGGGGGGGGGGGG"
+        ]
+    }
+    "lv2":
+    {
+        "ascii": [
+            "YYYYYYYYYYYYI",
+            "G-----M-----I",
+            "G--M-----M--I",
+            "G-----P-----I",
+            "G---M---M---I",
+            "GBBBBBBBBBBBB"
+        ]
+    }
+    "lv3":
+    {
+        "ascii": [
+            "GGGGGGGGGGGGY",
+            "B-----------Y",
+            "B-----M-----Y",
+            "B-----P-----Y",
+            "B--M-----M--Y",
+            "BIIIIIIIIIIII"
         ]
     }
 }
