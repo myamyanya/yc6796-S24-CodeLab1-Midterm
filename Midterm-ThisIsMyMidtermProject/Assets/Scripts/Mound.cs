@@ -17,6 +17,8 @@ public class Mound : MonoBehaviour
     {
         carrotSprite = Resources.Load<Sprite>("Sprites/carrot");
         eggSprite = Resources.LoadAll<Sprite>("Sprites/EasterEggs");
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -30,20 +32,24 @@ public class Mound : MonoBehaviour
     
     private void OnTriggerStay(Collider other)
     {
-        Debug.Log(isDigged);
+        //Debug.Log(isDigged);
         
         if (other.transform.gameObject.tag == "Player")
         {
             //Debug.Log("Dig?");
 
-            if (!isDigged && Input.GetKeyDown(KeyCode.F))
+            if (!isDigged && Input.GetKey(KeyCode.F))
             {
+                isDigged = true;
+                audioSource.PlayOneShot(soundDigging);
+                
                 Invoke("ChangeSprite", changeSpriteDelay);
             }
 
             if (isDigged && Input.GetKey(KeyCode.G))
             {
                 Debug.Log("Collected");
+                audioSource.PlayOneShot(soundCollecting);
 
                 if (isCarrot)
                 {
@@ -54,7 +60,7 @@ public class Mound : MonoBehaviour
                     GameManager.instance.EggAmt++;
                 }
                 
-                Destroy(gameObject);
+                Destroy(gameObject); 
             }
         }
     }
@@ -63,10 +69,15 @@ public class Mound : MonoBehaviour
     private bool isCarrot = false;
     private bool isEgg = false;
     
+    // For playing sound
+    public AudioClip soundDigging;
+    public AudioClip soundCollecting;
+    private AudioSource audioSource;
+    
     private void ChangeSprite()
     {
         Debug.Log("Sprite changed.");
-
+        
         // Random dig up a carrot -OR- an easter egg
         int lottery = Random.Range(0, 2);
         //lottery = 1; // For debugging
